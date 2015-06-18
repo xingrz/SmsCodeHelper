@@ -9,7 +9,7 @@ import me.drakeet.inmessage.model.Message;
 /**
  * Created by Administrator on 2014/12/24 0024.
  */
-public class StringUtils implements StaticObjectInterface{
+public class StringUtils implements StaticObjectInterface {
 
     private StringUtils() {
     }
@@ -40,7 +40,7 @@ public class StringUtils implements StaticObjectInterface{
         Pattern pattern = Pattern.compile("\\【(.*?)\\】");
         Matcher matcher = pattern.matcher(str);
         while (matcher.find()) {
-            if(matcher.group(1) != null && matcher.group(1).length() < 10) {
+            if (matcher.group(1) != null && matcher.group(1).length() < 10) {
 
                 return analyseSpecialCompany(matcher.group(1), str, address);
             }
@@ -48,7 +48,7 @@ public class StringUtils implements StaticObjectInterface{
         Pattern pattern1 = Pattern.compile("\\[(.*?)\\]");
         Matcher matcher1 = pattern1.matcher(str);
         while (matcher1.find()) {
-            if(matcher1.group(1) != null && matcher1.group(1).length() < 10) {
+            if (matcher1.group(1) != null && matcher1.group(1).length() < 10) {
 
                 return analyseSpecialCompany(matcher1.group(1), str, address);
             }
@@ -56,7 +56,7 @@ public class StringUtils implements StaticObjectInterface{
         Pattern pattern2 = Pattern.compile("\\((.*?)\\)");
         Matcher matcher2 = pattern2.matcher(str);
         while (matcher2.find()) {
-            if(matcher2.group(1) != null && matcher2.group(1).length() < 10) {
+            if (matcher2.group(1) != null && matcher2.group(1).length() < 10) {
 
                 return analyseSpecialCompany(matcher2.group(1), str, address);
             }
@@ -66,23 +66,22 @@ public class StringUtils implements StaticObjectInterface{
 
     private static String analyseSpecialCompany(String company, String content, String address) {
         String companyName = company;
-        if(company.equals("掌淘科技")) {
-           int index = content.indexOf("的验证码");
-           companyName = content.substring(0, index);
-           companyName = companyName.replaceAll("【掌淘科技】", "").trim();
-        }
-        else {
-            if(content.contains("贝壳单词的验证码")) {
+        if (company.equals("掌淘科技")) {
+            int index = content.indexOf("的验证码");
+            companyName = content.substring(0, index);
+            companyName = companyName.replaceAll("【掌淘科技】", "").trim();
+        } else {
+            if (content.contains("贝壳单词的验证码")) {
                 companyName = "贝壳单词";
             }
         }
-        if(address.equals("10010")) {
+        if (address.equals("10010")) {
             companyName = "中国联通";
         }
-        if(address.equals("10086")) {
+        if (address.equals("10086")) {
             companyName = "中国移动";
         }
-        if(address.equals("10000")) {
+        if (address.equals("10000")) {
             companyName = "中国电信";
         }
         return companyName;
@@ -99,39 +98,59 @@ public class StringUtils implements StaticObjectInterface{
         Matcher m = continuousNumberPattern.matcher(str);
         while (m.find()) {
             if (m.group().length() > 3 && m.group().length() < 8 && !m.group().contains(".")) {
-                return m.group();
+                if(isNearToKeyWord(m.group(), str)) {
+                    return m.group();
+                }
             }
         }
         return "";
     }
 
+    public static boolean isNearToKeyWord(String currentStr, String content) {
+        int startPosition = 0;
+        int endPosition = content.length() - 1;
+        if (content.indexOf(currentStr) > 10) {
+            startPosition = content.indexOf(currentStr) - 10;
+        }
+        if (content.indexOf(currentStr) + 10 < content.length() - 1) {
+            endPosition = content.indexOf(currentStr) + 10;
+        }
+        Boolean isNearToKeyWord = false;
+        for (int i = 0; i < CPATCHAS_KEYWORD.length; i++) {
+            if (content.substring(startPosition, endPosition).contains(CPATCHAS_KEYWORD[i])) {
+                isNearToKeyWord = true;
+                break;
+            }
+        }
+        return isNearToKeyWord;
+    }
+
     public static boolean isCaptchasMessage(String content) {
-       Boolean isCaptchasMessage = false;
-       for(int i = 0;i < CPATCHAS_KEYWORD.length;i++) {
-           if(content.contains(CPATCHAS_KEYWORD[i])) {
-               isCaptchasMessage = true;
-               break;
-           }
-       }
-       return  isCaptchasMessage;
+        Boolean isCaptchasMessage = false;
+        for (int i = 0; i < CPATCHAS_KEYWORD.length; i++) {
+            if (content.contains(CPATCHAS_KEYWORD[i])) {
+                isCaptchasMessage = true;
+                break;
+            }
+        }
+        return isCaptchasMessage;
     }
 
     /**
      * 根据短信获取描述文字
+     *
      * @return
      */
     public static String getResultText(Message message, Boolean isNotificationText) {
         String resultStr = "";
-        if(message.getCompanyName() != null && !isNotificationText) {
+        if (message.getCompanyName() != null && !isNotificationText) {
             resultStr += "来自" + message.getCompanyName() + "的验证码：";
-        }
-        else {
+        } else {
             resultStr += "当前验证码为：";
         }
-        if(message.getCaptchas() != null) {
+        if (message.getCaptchas() != null) {
             resultStr += message.getCaptchas();
-        }
-        else {
+        } else {
             resultStr += "点击查看详情.";
         }
         return resultStr;

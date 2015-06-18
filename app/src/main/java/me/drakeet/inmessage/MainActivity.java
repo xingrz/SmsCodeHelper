@@ -112,8 +112,10 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                 new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if (mMessages.get(position).getIsMessage()) {
-                            showDetailSMS(mMessages.get(position));
+                        if(!mIsRefreshing) {
+                            if (mMessages.get(position).getIsMessage()) {
+                                showDetailSMS(mMessages.get(position));
+                            }
                         }
                     }
                 }
