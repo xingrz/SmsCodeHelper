@@ -301,6 +301,6 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         app:navigationIcon="@mipmap/ic_arrow_back_white_24dp"
-        android:theme="@style/ActionBarPopupThemeOverlay"/>
+        android:theme="@style/ToolbarTheme"/>
 
 </FrameLayout>

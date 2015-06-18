@@ -15,7 +15,8 @@
 
     </style>
 
-    <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 
 </resources>
