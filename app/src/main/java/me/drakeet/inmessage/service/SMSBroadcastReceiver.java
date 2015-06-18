@@ -28,9 +28,10 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //从Intent中接受信息
         Object[] pdus = (Object[]) intent.getExtras().get("pdus");
+		String format = intent.getStringExtra("format");
         for (Object p : pdus) {
             byte[] sms = (byte[]) p;
-            SmsMessage message = SmsMessage.createFromPdu(sms);
+            SmsMessage message = (format != null) ? SmsMessage.createFromPdu(sms, format) : SmsMessage.createFromPdu(sms);
             //获取短信内容
             final String content = message.getMessageBody();
             //获取发送时间
