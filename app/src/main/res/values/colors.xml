@@ -3,7 +3,7 @@
 
     <color name="actionbar_background">#00bcd4</color>
     <color name="theme_primary">@color/actionbar_background</color>
-    <color name="theme_primary_dark">#ff2b4d90</color>
+    <color name="theme_primary_dark">#008196</color>
     <!--<color name="colorAccent">#18b000</color>-->
     <color name="colorAccent">#00778d</color>
     <color name="white">#ffffff</color>

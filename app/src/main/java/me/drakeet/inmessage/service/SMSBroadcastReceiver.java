@@ -82,7 +82,7 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                                 //终止广播
                             }
                         }, 358
-                )
+                );
             }
         }
     }
