@@ -28,10 +28,9 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //从Intent中接受信息
         Object[] pdus = (Object[]) intent.getExtras().get("pdus");
-		String format = intent.getStringExtra("format");
         for (Object p : pdus) {
             byte[] sms = (byte[]) p;
-            SmsMessage message = (format != null) ? SmsMessage.createFromPdu(sms, format) : SmsMessage.createFromPdu(sms);
+            SmsMessage message = SmsMessage.createFromPdu(sms);
             //获取短信内容
             final String content = message.getMessageBody();
             //获取发送时间
@@ -46,44 +45,44 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                 }
                 this.abortBroadcast();
                 mHandler = new WeakHandler();
-                mHandler.postDelayed(new Runnable() {
-                                         @Override
-                                         public void run() {
-                                             Message smsMessage = new Message();
-                                             smsMessage.setContent(content);
-                                             smsMessage.setSender(sender);
-                                             smsMessage.setDate(date);
-                                             String company = StringUtils.getContentInBracket(content, sender);
-                                             if (company != null) {
-                                                 smsMessage.setCompanyName(company);
-                                             }
-                                             smsMessage.setIsMessage(true);
-                                             //格式化短信日期提示
-                                             SimpleDateFormat sfd = new SimpleDateFormat("MM-dd hh:mm");
-                                             String time = sfd.format(date);
-                                             //获得短信的各项内容
-                                             String date_mms = time;
-                                             smsMessage.setReceiveDate(date_mms);
-                                             smsMessage.setReadStatus(0);
-                                             smsMessage.setFromSmsDB(1);
-                                             String captchas = StringUtils.tryToGetCaptchas(content);
-                                             if(!captchas.equals("")) {
-                                                 smsMessage.setCaptchas(captchas);
-                                             }
-                                             String resultContent = StringUtils.getResultText(smsMessage, false);
-                                             if(resultContent != null) {
-                                                 smsMessage.setResultContent(resultContent);
-                                             }
-                                             if(!VersionUtils.IS_MORE_THAN_LOLLIPOP) {
-                                                 smsMessage.save();
-                                             }
-                                             BusProvider.getInstance().register(this);
-                                             BusProvider.getInstance().post(new ReceiveMessageEvent(smsMessage));
-                                             BusProvider.getInstance().unregister(this);
-                                             //终止广播
-                                         }
-                                     }, 358
-                );
+                mHandler.postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                Message smsMessage = new Message();
+                                smsMessage.setContent(content);
+                                smsMessage.setSender(sender);
+                                smsMessage.setDate(date);
+                                String company = StringUtils.getContentInBracket(content, sender);
+                                if (company != null) {
+                                    smsMessage.setCompanyName(company);
+                                }
+                                smsMessage.setIsMessage(true);
+                                //格式化短信日期提示
+                                SimpleDateFormat sfd = new SimpleDateFormat("MM-dd hh:mm");
+                                //获得短信的各项内容
+                                String date_mms = sfd.format(date);
+                                smsMessage.setReceiveDate(date_mms);
+                                smsMessage.setReadStatus(0);
+                                smsMessage.setFromSmsDB(1);
+                                String captchas = StringUtils.tryToGetCaptchas(content);
+                                if (!captchas.equals("")) {
+                                    smsMessage.setCaptchas(captchas);
+                                }
+                                String resultContent = StringUtils.getResultText(smsMessage, false);
+                                if (resultContent != null) {
+                                    smsMessage.setResultContent(resultContent);
+                                }
+                                if (!VersionUtils.IS_MORE_THAN_LOLLIPOP) {
+                                    smsMessage.save();
+                                }
+                                BusProvider.getInstance().register(this);
+                                BusProvider.getInstance().post(new ReceiveMessageEvent(smsMessage));
+                                BusProvider.getInstance().unregister(this);
+                                //终止广播
+                            }
+                        }, 358
+                )
             }
         }
     }

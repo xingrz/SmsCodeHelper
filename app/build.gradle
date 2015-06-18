@@ -11,9 +11,9 @@ android {
     defaultConfig {
         applicationId "me.drakeet.inmessage"
         minSdkVersion 15
-        targetSdkVersion 21
-        versionCode 4
-        versionName "1.0"
+        targetSdkVersion 22
+        versionCode 5
+        versionName "1.0.1"
     }
     sourceSets {
         main {
