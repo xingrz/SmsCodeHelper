@@ -112,7 +112,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                 new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if(!mIsRefreshing) {
+                        if (!mIsRefreshing) {
                             if (mMessages.get(position).getIsMessage()) {
                                 showDetailSMS(mMessages.get(position));
                             }
@@ -168,39 +168,37 @@ public class MainActivity extends SwipeRefreshBaseActivity {
     @OnClick(R.id.fab_delete_all)
     public void deleteAll() {
         if (VersionUtils.IS_MORE_THAN_LOLLIPOP) {
-            ToastUtils.showShort("Android 5.0 以上暂不支持清空验证码短信！");
+            ToastUtils.showShort(R.string.str_version_morethan_five);
         } else {
             showConfirmDialog();
         }
     }
 
     private void showConfirmDialog() {
-        AlertDialog alertDialog = new AlertDialog.Builder(this).
-                setTitle("清空验证码短信？")
-                .setMessage(getString(R.string.str_clear_messages_hint))
-                .setPositiveButton(
-                                "确定",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialog,
-                                            int which) {
-                                        showDeleteDialog();
-                                    }
-                                }
-                        )
-                .setNegativeButton(
-                                "取消",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialog,
-                                            int which) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle(getString(R.string.empty_verification_code))
+                                                               .setMessage(getString(R.string.str_clear_messages_hint))
+                                                               .setPositiveButton(
+                                                                       android.R.string.ok,
+                                                                       new DialogInterface.OnClickListener() {
+                                                                           @Override
+                                                                           public void onClick(
+                                                                                   DialogInterface dialog,
+                                                                                   int which) {
+                                                                               showDeleteDialog();
+                                                                           }
+                                                                       }
+                                                               )
+                                                               .setNegativeButton(
+                                                                       android.R.string.cancel,
+                                                                       new DialogInterface.OnClickListener() {
+                                                                           @Override
+                                                                           public void onClick(
+                                                                                   DialogInterface dialog,
+                                                                                   int which) {
 
-                                    }
-                                }
-                        )
-                .create();
+                                                                           }
+                                                                       }
+                                                               ).create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
@@ -210,23 +208,22 @@ public class MainActivity extends SwipeRefreshBaseActivity {
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
         View addLayout = layoutInflater.inflate(R.layout.view_delete_messages, null);
         mNumberProgressBar = (NumberProgressBar) addLayout.findViewById(R.id.number_progress_bar);
-        AlertDialog deleteDialog = new AlertDialog.Builder(MainActivity.this).
-                setTitle(
-                        "正在删除验证码短信..."
-                )
-                .setView(addLayout)
-                .setNegativeButton(
-                                "停止",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialog,
-                                            int which) {
-                                        mStopDelete = true;
-                                    }
-                                }
-                        )
-                .create();
+        AlertDialog deleteDialog = new AlertDialog.Builder(MainActivity.this).setTitle(
+                getString(R.string.deleting_verification_code)
+        )
+                                                                             .setView(addLayout)
+                                                                             .setNegativeButton(
+                                                                                     android.R.string.cancel,
+                                                                                     new DialogInterface.OnClickListener() {
+                                                                                         @Override
+                                                                                         public void onClick(
+                                                                                                 DialogInterface dialog,
+                                                                                                 int which) {
+                                                                                             mStopDelete = true;
+                                                                                         }
+                                                                                     }
+                                                                             )
+                                                                             .create();
         deleteDialog.setCanceledOnTouchOutside(false);
         deleteDialog.setOnKeyListener(
                 new DialogInterface.OnKeyListener() {
@@ -250,20 +247,19 @@ public class MainActivity extends SwipeRefreshBaseActivity {
 
 
     private void showBussinessDialog() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).
-                setTitle(getString(R.string.str_check_bussiness_hint))
-                .setMessage(getString(R.string.str_doing_hint))
-                .setPositiveButton(
-                                "确定",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialog,
-                                            int which) {
-                                    }
-                                }
-                        )
-                .create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle(getString(R.string.str_check_bussiness_hint))
+                                                                     .setMessage(getString(R.string.str_doing_hint))
+                                                                     .setPositiveButton(
+                                                                             android.R.string.ok,
+                                                                             new DialogInterface.OnClickListener() {
+                                                                                 @Override
+                                                                                 public void onClick(
+                                                                                         DialogInterface dialog,
+                                                                                         int which) {
+                                                                                 }
+                                                                             }
+                                                                     )
+                                                                     .create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
         TaskUtils.executeAsyncTask(
@@ -324,20 +320,19 @@ public class MainActivity extends SwipeRefreshBaseActivity {
     }
 
     private void showDetailSMS(Message message) {
-        AlertDialog alertDialog = new AlertDialog.Builder(this).
-                setTitle(message.getSender())
-                .setMessage(message.getContent())
-                .setPositiveButton(
-                                "确定",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialog,
-                                            int which) {
-                                    }
-                                }
-                        )
-                .create();
+        AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle(message.getSender())
+                                                               .setMessage(message.getContent())
+                                                               .setPositiveButton(
+                                                                       android.R.string.ok,
+                                                                       new DialogInterface.OnClickListener() {
+                                                                           @Override
+                                                                           public void onClick(
+                                                                                   DialogInterface dialog,
+                                                                                   int which) {
+                                                                           }
+                                                                       }
+                                                               )
+                                                               .create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
@@ -374,7 +369,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                     protected void onPostExecute(String o) {
                         super.onPostExecute(o);
                         deleteDialog.dismiss();
-                        ToastUtils.showShort("成功删除" + o + "条验证码短信！");
+                        ToastUtils.showShort(String.format(getString(R.string.successfully_delete_verification_code_numbers), o));
                         getAllMessage();
                     }
 
@@ -420,14 +415,14 @@ public class MainActivity extends SwipeRefreshBaseActivity {
         final MenuItem switchItem = menu.findItem(R.id.menu_show_result);
         MenuItemCompat.setActionView(switchItem, R.layout.view_switchcompat);
         final SwitchCompat switchCompat = (SwitchCompat) switchItem.getActionView()
-                .findViewById(R.id.switchCompat);
+                                                                   .findViewById(R.id.switchCompat);
         switchCompat.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (mIsRefreshing) {
                             switchCompat.setChecked(!isChecked);
-                            ToastUtils.showShort("加载中请勿改变开关状态!");
+                            ToastUtils.showShort(getString(R.string.do_not_change_the_switch));
                         } else {
                             SharedPreferences sharedPreferences = getSharedPreferences(
                                     "userinfo", Context.MODE_PRIVATE
@@ -438,9 +433,9 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                                 mMainMessageAdapter.setShowResult(isChecked);
                                 mMainMessageAdapter.notifyDataSetChanged();
                                 if (isChecked)
-                                    ToastUtils.showShort("开启验证码内容显示简化");
+                                    ToastUtils.showShort(getString(R.string.open_simplified));
                                 else
-                                    ToastUtils.showShort("关闭验证码内容显示简化");
+                                    ToastUtils.showShort(getString(R.string.close_simplified));
                             }
                         }
                     }
@@ -473,7 +468,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
             if (!mIsRefreshing) {
                 showBussinessDialog();
             } else {
-                ToastUtils.showShort("加载中请勿操作！");
+                ToastUtils.showShort(getString(R.string.do_not_operate_in_load));
             }
         }
         return super.onOptionsItemSelected(item);
@@ -485,7 +480,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
     public void onClickShare() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_just));
         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(Intent.createChooser(intent, getTitle()));

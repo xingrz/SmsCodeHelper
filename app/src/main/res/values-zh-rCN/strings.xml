@@ -18,4 +18,12 @@
     <string name="developer_and_designer"><![CDATA[开发者 & 设计]]></string>
     <string name="open_source_lis">开源协议</string>
     <string name="introduce_and_help">介绍与帮助</string>
+    <string name="empty_verification_code">清空验证码短信？</string>
+    <string name="deleting_verification_code">删除验证码短信中…</string>
+    <string name="successfully_delete_verification_code_numbers">成功删除%s条验证码短信</string>
+    <string name="do_not_change_the_switch">加载中请勿改变开关状态!</string>
+    <string name="open_simplified">开启验证码内容显示简化</string>
+    <string name="close_simplified">关闭验证码内容显示简化</string>
+    <string name="do_not_operate_in_load">加载中请勿操作！</string>
+    <string name="share_just">分享</string>
 </resources>

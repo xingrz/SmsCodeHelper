@@ -12,10 +12,18 @@
     <string name="str_version_morethan_five">Android 5.0+ does not support emptied verification code text message temporarily.</string>
     <string name="tip">Verification code: %s, and has been copied to the clipboard, press your input box to paste the code.</string>
     <string name="notify_msg">Current verification code:%s (Click to copy)</string>
-    <string name="app_name_with_introduce">SmsCodeHelper - Convenient for Verification code</string>
+    <string name="app_name_with_introduce">SmsCodeHelper \n- Convenient for Verification code</string>
     <string name="developers">Developers</string>
     <string name="developer">Developer</string>
     <string name="developer_and_designer"><![CDATA[Developer & Designer]]></string>
     <string name="open_source_lis">Open source licenses</string>
     <string name="introduce_and_help">Introduction and help</string>
+    <string name="empty_verification_code">Empty verification code SMS？</string>
+    <string name="deleting_verification_code">Deleting verification code SMS...</string>
+    <string name="successfully_delete_verification_code_numbers">Successfully delete %s verification code sms!</string>
+    <string name="do_not_change_the_switch">Do not change the switch state in the load! </string>
+    <string name="open_simplified">Opened simplified</string>
+    <string name="close_simplified">Closed simplified</string>
+    <string name="do_not_operate_in_load">Do not operate in load!</string>
+    <string name="share_just">Share</string>
 </resources>
