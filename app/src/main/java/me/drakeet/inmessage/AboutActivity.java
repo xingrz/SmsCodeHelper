@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -16,18 +17,25 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+/**
+ * Created by drakeet on 15/6/5.
+ */
 public class AboutActivity extends AppCompatActivity {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
     @InjectView(R.id.sv_about)
     ObservableScrollView mScrollView;
+    @InjectView(R.id.tv_version)
+    TextView mVersionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.inject(this);
+
+        setUpVersionName();
 
         final int headerHeight = getResources().getDimensionPixelSize(R.dimen.about_header_height);
         mToolbar.setTitle("");
@@ -64,6 +72,10 @@ public class AboutActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    private void setUpVersionName() {
+        mVersionTextView.setText("Version " + BuildConfig.VERSION_NAME);
     }
 
     @Override
