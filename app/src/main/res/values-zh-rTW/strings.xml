@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">驗證碼助手</string>
+    <string name="about">關於</string>
+    <string name="introduce">驗證碼助手，是由原「貝殼單詞」團隊開發的一款新的開源輕App.\n\n它可以在手機接收到驗證碼短信的時候，自動浮現驗證碼，並自動複製驗證碼到用戶的剪切板。當用戶接收到短信驗證碼，只要長按驗證碼的輸入框，粘貼驗證碼即可。 \n\n除此之外，還可以讓用戶批量刪除無用驗證碼短信，幫助用戶反向推理出綁定了哪些業務（換號必備啊有木有）。 \n\n我們做得非常輕，也秉承了一貫的好設計和用戶友好，在閒時它不會自啟動、不會偷跑​​流量、不會佔用任何內存（不信或擔憂的話歡迎查看源代碼~）。 \n\n開放源代碼地址：https://github.com/drakeet/SmsCodeHelper\n\n我們開源，做好設計，不亂使用權限，只求你如果喜歡，可以分享給你的朋友們，好東西需要分享才能讓其健康成長，每一次分享都是我們的動力，非常感謝！</string>
+    <string name="share">分享給朋友（謝謝QAQ）</string>
+    <string name="guess">反向推理綁定業務</string>
+    <string name="share_text">發現了一款非常美觀易用的「驗證碼助手」輕App，開源的，可以在驗證碼短信來臨的時，自動識別驗證碼，懸浮並且自動複製到剪切板，不用記憶不用輸入，只要長按粘貼即可輸入驗證碼。推薦~：http://fir.im/codehelper</string>
+    <string name="str_no_bussiness">暫未識別綁定任何業務！</string>
+    <string name="str_doing_hint">識別中，請稍等</string>
+    <string name="str_check_bussiness_hint">反向推理出的綁定業務詳情 v0.1</string>
+    <string name="str_clear_messages_hint">操作後將會把短信收件箱中所有的驗證碼短信清空，但是我們還是會為你保存驗證碼記錄（就算清空我們也還是能夠幫你反向推理出綁定的業務）。請仔細檢查並確認操作！</string>
+    <string name="str_version_morethan_five">Android 5.0 以上暫不支持清空驗證碼短信！</string>
+    <string name="tip">識別到驗證碼：%s，並已復製到剪貼板，長按你的輸入框即可粘貼驗證碼</string>
+    <string name="notify_msg">當前驗證碼：%s（點擊可複制）</string>
+    <string name="app_name_with_introduce">驗證碼助手- 不用記數字不用輸入完成驗證</string>
+    <string name="developers">開發人員</string>
+    <string name="developer">開發者</string>
+    <string name="developer_and_designer"><![CDATA[開發者 & 設計]]></string>
+    <string name="open_source_lis">開源協議</string>
+    <string name="introduce_and_help">介紹與幫助</string>
+</resources>
