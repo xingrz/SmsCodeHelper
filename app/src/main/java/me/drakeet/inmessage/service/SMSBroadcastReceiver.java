@@ -36,52 +36,61 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
             //获取发送时间
             final Date date = new Date(message.getTimestampMillis());
             final String sender = message.getOriginatingAddress();
-            if (!StringUtils.isPersonalMoblieNO(sender) && StringUtils.isCaptchasMessage(content) && !StringUtils
-                    .tryToGetCaptchas(content)
-                    .equals("")) {
-                if (!DiscernCaptchasService.isAlive) {
-                    mServiceIntent = new Intent(context, DiscernCaptchasService.class);
-                    context.startService(mServiceIntent);
+
+            if (!StringUtils.isPersonalMoblieNO(sender)) {
+                boolean isCpatchasMessage = false;
+                if (!StringUtils.isContainsChinese(content)) {
+                    if (StringUtils.isCaptchasMessageEn(content) && !StringUtils.tryToGetCaptchasEn(content).equals("")) {
+                        isCpatchasMessage = true;
+                    }
+                } else if (StringUtils.isCaptchasMessage(content) && !StringUtils.tryToGetCaptchas(content).equals("")) {
+                    isCpatchasMessage = true;
                 }
-                this.abortBroadcast();
-                mHandler = new WeakHandler();
-                mHandler.postDelayed(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                Message smsMessage = new Message();
-                                smsMessage.setContent(content);
-                                smsMessage.setSender(sender);
-                                smsMessage.setDate(date);
-                                String company = StringUtils.getContentInBracket(content, sender);
-                                if (company != null) {
-                                    smsMessage.setCompanyName(company);
+                if (isCpatchasMessage) {
+                    if (!DiscernCaptchasService.isAlive) {
+                        mServiceIntent = new Intent(context, DiscernCaptchasService.class);
+                        context.startService(mServiceIntent);
+                    }
+                    this.abortBroadcast();
+                    mHandler = new WeakHandler();
+                    mHandler.postDelayed(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    Message smsMessage = new Message();
+                                    smsMessage.setContent(content);
+                                    smsMessage.setSender(sender);
+                                    smsMessage.setDate(date);
+                                    String company = StringUtils.getContentInBracket(content, sender);
+                                    if (company != null) {
+                                        smsMessage.setCompanyName(company);
+                                    }
+                                    smsMessage.setIsMessage(true);
+                                    //格式化短信日期提示
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd hh:mm");
+                                    //获得短信的各项内容
+                                    String date_mms = dateFormat.format(date);
+                                    smsMessage.setReceiveDate(date_mms);
+                                    smsMessage.setReadStatus(0);
+                                    smsMessage.setFromSmsDB(1);
+                                    String captchas = StringUtils.tryToGetCaptchas(content);
+                                    if (!captchas.equals("")) {
+                                        smsMessage.setCaptchas(captchas);
+                                    }
+                                    String resultContent = StringUtils.getResultText(smsMessage, false);
+                                    if (resultContent != null) {
+                                        smsMessage.setResultContent(resultContent);
+                                    }
+                                    if (!VersionUtils.IS_MORE_THAN_LOLLIPOP) {
+                                        smsMessage.save();
+                                    }
+                                    BusProvider.getInstance().register(this);
+                                    BusProvider.getInstance().post(new ReceiveMessageEvent(smsMessage));
+                                    BusProvider.getInstance().unregister(this);
                                 }
-                                smsMessage.setIsMessage(true);
-                                //格式化短信日期提示
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd hh:mm");
-                                //获得短信的各项内容
-                                String date_mms = dateFormat.format(date);
-                                smsMessage.setReceiveDate(date_mms);
-                                smsMessage.setReadStatus(0);
-                                smsMessage.setFromSmsDB(1);
-                                String captchas = StringUtils.tryToGetCaptchas(content);
-                                if (!captchas.equals("")) {
-                                    smsMessage.setCaptchas(captchas);
-                                }
-                                String resultContent = StringUtils.getResultText(smsMessage, false);
-                                if (resultContent != null) {
-                                    smsMessage.setResultContent(resultContent);
-                                }
-                                if (!VersionUtils.IS_MORE_THAN_LOLLIPOP) {
-                                    smsMessage.save();
-                                }
-                                BusProvider.getInstance().register(this);
-                                BusProvider.getInstance().post(new ReceiveMessageEvent(smsMessage));
-                                BusProvider.getInstance().unregister(this);
-                            }
-                        }, 358
-                );
+                            }, 358
+                    );
+                }
             }
         }
     }

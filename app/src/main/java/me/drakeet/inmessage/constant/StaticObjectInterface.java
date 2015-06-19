@@ -5,6 +5,9 @@ package me.drakeet.inmessage.constant;
  */
 public interface StaticObjectInterface {
 
-    String[] CPATCHAS_KEYWORD = {"激活码", "动态码", "校验码", "验证码", "驗證碼", "激活碼", "動態碼", "校驗碼"};
+    String[] CPATCHAS_KEYWORD = {"激活码", "动态码", "校验码", "验证码", "确认码", "检验码", "验证代码", "激活代码",
+            "校验代码", "动态代码", "检验代码", "确认代码", "驗證碼", "激活碼", "動態碼", "校驗碼", "檢驗碼", "驗證代碼",
+            "激活代碼", "校驗代碼", "確認代碼", "動態代碼", "檢驗代碼"};
+    String[] CPATCHAS_KEYWORD_EN = {"CODE"};
     String ACTION_CLICK = "me.drakeet.inmessage.intent.action.NotificationClick";
 }

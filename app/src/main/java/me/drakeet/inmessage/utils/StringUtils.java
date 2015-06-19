@@ -87,6 +87,23 @@ public class StringUtils implements StaticObjectInterface {
         return companyName;
     }
 
+    /**
+     * 判断字符串中时否包含中文
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isContainsChinese(String str) {
+        String regEx = "[\u4e00-\u9fa5]";
+        Pattern pat = Pattern.compile(regEx);
+        Matcher matcher = pat.matcher(str);
+        boolean flg = false;
+        if (matcher.find()) {
+            flg = true;
+        }
+        return flg || str.contains("【") || str.contains("】") || str.contains("。");
+    }
+
     public static boolean isPersonalMoblieNO(String mobiles) {
         Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
         Matcher m = p.matcher(mobiles);
@@ -106,14 +123,46 @@ public class StringUtils implements StaticObjectInterface {
         return "";
     }
 
+    public static String tryToGetCaptchasEn(String str) {
+        Pattern continuousNumberPattern = Pattern.compile("[0-9\\.]+");
+        Matcher m = continuousNumberPattern.matcher(str);
+        while (m.find()) {
+            if (m.group().length() > 3 && m.group().length() < 8 && !m.group().contains(".")) {
+                if(isNearToKeyWordEn(m.group(), str)) {
+                    return m.group();
+                }
+            }
+        }
+        return "";
+    }
+
+    public static boolean isNearToKeyWordEn(String currentStr, String content) {
+        int startPosition = 0;
+        int endPosition = content.length() - 1;
+        if (content.indexOf(currentStr) > 12) {
+            startPosition = content.indexOf(currentStr) - 12;
+        }
+        if (content.indexOf(currentStr)  + currentStr.length() + 12 < content.length() - 1) {
+            endPosition = content.indexOf(currentStr) + currentStr.length() + 12;
+        }
+        Boolean isNearToKeyWord = false;
+        for (int i = 0; i < CPATCHAS_KEYWORD_EN.length; i++) {
+            if (content.substring(startPosition, endPosition).contains(CPATCHAS_KEYWORD_EN[i])) {
+                isNearToKeyWord = true;
+                break;
+            }
+        }
+        return isNearToKeyWord;
+    }
+
     public static boolean isNearToKeyWord(String currentStr, String content) {
         int startPosition = 0;
         int endPosition = content.length() - 1;
-        if (content.indexOf(currentStr) > 10) {
-            startPosition = content.indexOf(currentStr) - 10;
+        if (content.indexOf(currentStr) > 12) {
+            startPosition = content.indexOf(currentStr) - 12;
         }
-        if (content.indexOf(currentStr) + 10 < content.length() - 1) {
-            endPosition = content.indexOf(currentStr) + 10;
+        if (content.indexOf(currentStr)  + currentStr.length() + 12 < content.length() - 1) {
+            endPosition = content.indexOf(currentStr) + currentStr.length() + 12;
         }
         Boolean isNearToKeyWord = false;
         for (int i = 0; i < CPATCHAS_KEYWORD.length; i++) {
@@ -129,6 +178,17 @@ public class StringUtils implements StaticObjectInterface {
         Boolean isCaptchasMessage = false;
         for (int i = 0; i < CPATCHAS_KEYWORD.length; i++) {
             if (content.contains(CPATCHAS_KEYWORD[i])) {
+                isCaptchasMessage = true;
+                break;
+            }
+        }
+        return isCaptchasMessage;
+    }
+
+    public static boolean isCaptchasMessageEn(String content) {
+        Boolean isCaptchasMessage = false;
+        for (int i = 0; i < CPATCHAS_KEYWORD_EN.length; i++) {
+            if (content.contains(CPATCHAS_KEYWORD_EN[i])) {
                 isCaptchasMessage = true;
                 break;
             }

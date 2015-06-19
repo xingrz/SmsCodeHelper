@@ -50,38 +50,49 @@ public class SmsUtils {
             int indexThreadId = cursor.getColumnIndex("thread_id");
             String strbody = cursor.getString(indexBody);
             String strAddress = cursor.getString(indexAddress);
-            if (!StringUtils.isPersonalMoblieNO(strAddress) && StringUtils.isCaptchasMessage(strbody) && !StringUtils.tryToGetCaptchas(strbody).equals("")) {
-                int date = cursor.getColumnIndex("date");
-                //格式化短信日期提示
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd hh:mm");
-                Date formatDate = new Date(Long.parseLong(cursor.getString(date)));
-                long threadId = cursor.getLong(indexThreadId);
+            if (!StringUtils.isPersonalMoblieNO(strAddress)) {
+                boolean isCpatchasMessage = false;
+                if(!StringUtils.isContainsChinese(strbody)) {
+                    if(StringUtils.isCaptchasMessageEn(strbody) && !StringUtils.tryToGetCaptchasEn(strbody).equals("")) {
+                        isCpatchasMessage = true;
+                    }
+                }
+                else if(StringUtils.isCaptchasMessage(strbody) && !StringUtils.tryToGetCaptchas(strbody).equals("")) {
+                    isCpatchasMessage = true;
+                }
+                if(isCpatchasMessage) {
+                    int date = cursor.getColumnIndex("date");
+                    //格式化短信日期提示
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd hh:mm");
+                    Date formatDate = new Date(Long.parseLong(cursor.getString(date)));
+                    long threadId = cursor.getLong(indexThreadId);
 
-                //获得短信的各项内容
-                String dateMms = dateFormat.format(formatDate);
-                Message message = new Message();
-                String company = StringUtils.getContentInBracket(strbody, strAddress);
-                if (company != null) {
-                    message.setCompanyName(company);
+                    //获得短信的各项内容
+                    String dateMms = dateFormat.format(formatDate);
+                    Message message = new Message();
+                    String company = StringUtils.getContentInBracket(strbody, strAddress);
+                    if (company != null) {
+                        message.setCompanyName(company);
+                    }
+                    String captchas = StringUtils.tryToGetCaptchas(strbody);
+                    if (!captchas.equals("")) {
+                        message.setCaptchas(captchas);
+                    }
+                    int columnIndex = cursor.getColumnIndex("_id");
+                    String smsId = cursor.getString(columnIndex);
+                    message.setIsMessage(true);
+                    message.setDate(formatDate);
+                    message.setSender(strAddress);
+                    message.setThreadId(threadId);
+                    message.setContent(strbody);
+                    message.setSmsId(smsId);
+                    message.setReceiveDate(dateMms);
+                    String resultContent = StringUtils.getResultText(message, false);
+                    if (resultContent != null) {
+                        message.setResultContent(resultContent);
+                    }
+                    smsMessages.add(message);
                 }
-                String captchas = StringUtils.tryToGetCaptchas(strbody);
-                if(!captchas.equals("")) {
-                    message.setCaptchas(captchas);
-                }
-                int columnIndex = cursor.getColumnIndex("_id");
-                String smsId = cursor.getString(columnIndex);
-                message.setIsMessage(true);
-                message.setDate(formatDate);
-                message.setSender(strAddress);
-                message.setThreadId(threadId);
-                message.setContent(strbody);
-                message.setSmsId(smsId);
-                message.setReceiveDate(dateMms);
-                String resultContent = StringUtils.getResultText(message, false);
-                if(resultContent != null) {
-                    message.setResultContent(resultContent);
-                }
-                smsMessages.add(message);
             }
         }
 
