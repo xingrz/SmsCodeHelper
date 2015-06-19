@@ -60,7 +60,7 @@ public class TimeUtils {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return (long) (cal.getTimeInMillis());
+        return cal.getTimeInMillis();
     }
 
     public static Date getDateFromTimestamp(long longTime) {

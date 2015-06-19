@@ -129,7 +129,7 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
                 new AsyncTask<Object, Object, Bitmap>() {
                     @Override
                     protected Bitmap doInBackground(Object... params) {
-                        Bitmap bitmap = mSmsUtils.get_people_image(phoneNumber);
+                        Bitmap bitmap = mSmsUtils.getPeopleImage(phoneNumber);
                         return bitmap;
                     }
 

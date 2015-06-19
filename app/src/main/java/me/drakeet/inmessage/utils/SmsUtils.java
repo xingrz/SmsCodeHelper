@@ -39,29 +39,26 @@ public class SmsUtils {
             "date", "type", "thread_id"};
 
     public List<Message> getAllCaptchMessages() {
-        List<String> dateGroupS = new ArrayList<>();
-        ContentResolver cr = mContext.getContentResolver();
-        Cursor cursor = cr.query(ALL_MESSAGE_URI, ALL_THREADS_PROJECTION,
+        List<String> dateGroups = new ArrayList<>();
+        ContentResolver contentResolver = mContext.getContentResolver();
+        Cursor cursor = contentResolver.query(ALL_MESSAGE_URI, ALL_THREADS_PROJECTION,
                 null, null, "date desc");
         List<Message> smsMessages = new ArrayList<>();
-        int i = 0;
         while ((cursor.moveToNext())) {
-            i += 1;
-            int index_Body = cursor.getColumnIndex("body");
-            int index_Address = cursor.getColumnIndex("address");
-            int index_ThreadId = cursor.getColumnIndex("thread_id");
-            String strbody = cursor.getString(index_Body);
-            String strAddress = cursor.getString(index_Address);
+            int indexBody = cursor.getColumnIndex("body");
+            int indexAddress = cursor.getColumnIndex("address");
+            int indexThreadId = cursor.getColumnIndex("thread_id");
+            String strbody = cursor.getString(indexBody);
+            String strAddress = cursor.getString(indexAddress);
             if (!StringUtils.isPersonalMoblieNO(strAddress) && StringUtils.isCaptchasMessage(strbody) && !StringUtils.tryToGetCaptchas(strbody).equals("")) {
                 int date = cursor.getColumnIndex("date");
                 //格式化短信日期提示
-                SimpleDateFormat sfd = new SimpleDateFormat("MM-dd hh:mm");
-                Date date_format = new Date(Long.parseLong(cursor.getString(date)));
-                long thread_id = cursor.getLong(index_ThreadId);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd hh:mm");
+                Date formatDate = new Date(Long.parseLong(cursor.getString(date)));
+                long threadId = cursor.getLong(indexThreadId);
 
-                String time = sfd.format(date_format);
                 //获得短信的各项内容
-                String date_mms = time;
+                String dateMms = dateFormat.format(formatDate);
                 Message message = new Message();
                 String company = StringUtils.getContentInBracket(strbody, strAddress);
                 if (company != null) {
@@ -71,15 +68,15 @@ public class SmsUtils {
                 if(!captchas.equals("")) {
                     message.setCaptchas(captchas);
                 }
-                int index_Id = cursor.getColumnIndex("_id");
-                String smsId = cursor.getString(index_Id);
+                int columnIndex = cursor.getColumnIndex("_id");
+                String smsId = cursor.getString(columnIndex);
                 message.setIsMessage(true);
-                message.setDate(date_format);
+                message.setDate(formatDate);
                 message.setSender(strAddress);
-                message.setThreadId(thread_id);
+                message.setThreadId(threadId);
                 message.setContent(strbody);
                 message.setSmsId(smsId);
-                message.setReceiveDate(date_mms);
+                message.setReceiveDate(dateMms);
                 String resultContent = StringUtils.getResultText(message, false);
                 if(resultContent != null) {
                     message.setResultContent(resultContent);
@@ -111,15 +108,15 @@ public class SmsUtils {
         List<Message> unionMessages = new ArrayList<>();
         for(Message message: smsMessages) {
             String group = TimeUtils.getInstance().getDateGroup(message.getDate());
-            if (dateGroupS.size() == 0) {
-                dateGroupS.add(group);
+            if (dateGroups.size() == 0) {
+                dateGroups.add(group);
                 Message dateMessage = new Message();
                 dateMessage.setReceiveDate(group);
                 dateMessage.setIsMessage(false);
                 unionMessages.add(dateMessage);
             } else {
-                if (!group.equals(dateGroupS.get(dateGroupS.size() - 1))) {
-                    dateGroupS.add(group);
+                if (!group.equals(dateGroups.get(dateGroups.size() - 1))) {
+                    dateGroups.add(group);
                     Message dateMessage = new Message();
                     dateMessage.setReceiveDate(group);
                     dateMessage.setIsMessage(false);
@@ -141,8 +138,7 @@ public class SmsUtils {
      * */
     public int deleteSms(String smsId) {
         final Uri SMS_URI = Uri.parse("content://sms/");
-        int result = mContext.getContentResolver().delete(SMS_URI,"_id=?",new String[]{smsId});
-        return result;
+        return mContext.getContentResolver().delete(SMS_URI,"_id=?",new String[]{smsId});
     }
 
     public String getContactNameFromPhoneBook(String phoneNum) {
@@ -169,7 +165,7 @@ public class SmsUtils {
     }
 
     // 根据号码获得联系人头像
-    public Bitmap get_people_image(String x_number) {
+    public Bitmap getPeopleImage(String x_number) {
 
         // 获得Uri
         Uri uriNumber2Contacts = Uri.parse("content://com.android.contacts/"
@@ -193,8 +189,7 @@ public class SmsUtils {
             // 打开头像图片的InputStream
             InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(mContext.getContentResolver(), uri);
             // 从InputStream获得bitmap
-            Bitmap bmp_head = BitmapFactory.decodeStream(input);
-            return bmp_head;
+            return BitmapFactory.decodeStream(input);
         }
         cursorCantacts.close();
         return null;

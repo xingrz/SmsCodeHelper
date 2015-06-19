@@ -8,6 +8,7 @@ import android.os.Build;
  */
 public class TaskUtils {
 
+    @SafeVarargs
     public static <Params, Progress, Result> void executeAsyncTask(
             AsyncTask<Params, Progress, Result> task, Params... params) {
         if (Build.VERSION.SDK_INT >= 11) {

@@ -59,9 +59,9 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                                 }
                                 smsMessage.setIsMessage(true);
                                 //格式化短信日期提示
-                                SimpleDateFormat sfd = new SimpleDateFormat("MM-dd hh:mm");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd hh:mm");
                                 //获得短信的各项内容
-                                String date_mms = sfd.format(date);
+                                String date_mms = dateFormat.format(date);
                                 smsMessage.setReceiveDate(date_mms);
                                 smsMessage.setReadStatus(0);
                                 smsMessage.setFromSmsDB(1);
@@ -79,7 +79,6 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
                                 BusProvider.getInstance().register(this);
                                 BusProvider.getInstance().post(new ReceiveMessageEvent(smsMessage));
                                 BusProvider.getInstance().unregister(this);
-                                //终止广播
                             }
                         }, 358
                 );

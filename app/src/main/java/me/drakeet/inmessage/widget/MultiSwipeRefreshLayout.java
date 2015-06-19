@@ -28,6 +28,7 @@ import me.drakeet.inmessage.R;
  * Created by drakeet on 1/3/15.
  */
 public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
+
     private CanChildScrollUpCallback mCanChildScrollUpCallback;
 
     private Drawable mForegroundDrawable;
@@ -61,8 +62,8 @@ public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
         mCanChildScrollUpCallback = canChildScrollUpCallback;
     }
 
-    public static interface CanChildScrollUpCallback {
-        public boolean canSwipeRefreshChildScrollUp();
+    public interface CanChildScrollUpCallback {
+        boolean canSwipeRefreshChildScrollUp();
     }
 
     @Override

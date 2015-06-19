@@ -177,10 +177,8 @@ public class MainActivity extends SwipeRefreshBaseActivity {
     private void showConfirmDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).
                 setTitle("清空验证码短信？")
-                .
-                        setMessage(getString(R.string.str_clear_messages_hint))
-                .
-                        setPositiveButton(
+                .setMessage(getString(R.string.str_clear_messages_hint))
+                .setPositiveButton(
                                 "确定",
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -191,8 +189,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                                     }
                                 }
                         )
-                .
-                        setNegativeButton(
+                .setNegativeButton(
                                 "取消",
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -218,8 +215,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                         "正在删除验证码短信..."
                 )
                 .setView(addLayout)
-                .
-                        setNegativeButton(
+                .setNegativeButton(
                                 "停止",
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -256,10 +252,8 @@ public class MainActivity extends SwipeRefreshBaseActivity {
     private void showBussinessDialog() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).
                 setTitle(getString(R.string.str_check_bussiness_hint))
-                .
-                        setMessage(getString(R.string.str_doing_hint))
-                .
-                        setPositiveButton(
+                .setMessage(getString(R.string.str_doing_hint))
+                .setPositiveButton(
                                 "确定",
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -269,8 +263,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                                     }
                                 }
                         )
-                .
-                        create();
+                .create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
         TaskUtils.executeAsyncTask(
@@ -333,10 +326,8 @@ public class MainActivity extends SwipeRefreshBaseActivity {
     private void showDetailSMS(Message message) {
         AlertDialog alertDialog = new AlertDialog.Builder(this).
                 setTitle(message.getSender())
-                .
-                        setMessage(message.getContent())
-                .
-                        setPositiveButton(
+                .setMessage(message.getContent())
+                .setPositiveButton(
                                 "确定",
                                 new DialogInterface.OnClickListener() {
                                     @Override
@@ -346,8 +337,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                                     }
                                 }
                         )
-                .
-                        create();
+                .create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }

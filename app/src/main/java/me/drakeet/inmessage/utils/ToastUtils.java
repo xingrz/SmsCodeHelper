@@ -1,7 +1,6 @@
 package me.drakeet.inmessage.utils;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
 import me.drakeet.inmessage.App;
@@ -34,21 +33,6 @@ public class ToastUtils{
 
     public static void showLong(int resId) {
         Toast.makeText(App.getContext(), resId, Toast.LENGTH_LONG).show();
-    }
-
-    public static void showToast(final String text) {
-        TaskUtils.executeAsyncTask(new AsyncTask<Object, Object, Object>() {
-            @Override
-            protected Object doInBackground(Object... params) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                showShort(text);
-            }
-        });
     }
 
     public static void showLong(String message) {

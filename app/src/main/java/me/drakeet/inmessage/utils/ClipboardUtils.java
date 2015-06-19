@@ -11,8 +11,8 @@ public class ClipboardUtils {
 
     public static void putTextIntoClipboard(Context context, String text) {
         // 得到剪贴板管理器
-        ClipboardManager cmb = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("copy text", text);
-        cmb.setPrimaryClip(clip);
+        ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("copy text", text);
+        clipboardManager.setPrimaryClip(clipData);
     }
 }
