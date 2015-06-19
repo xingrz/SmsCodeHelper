@@ -68,6 +68,7 @@
                     android:layout_margin="16dp"
                     android:text="@string/introduce"
                     android:textColor="@color/md_grey_800"
+                    android:autoLink="web"
                     android:textSize="14sp"/>
 
             </RelativeLayout>
