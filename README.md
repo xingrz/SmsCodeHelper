@@ -1,4 +1,4 @@
-#验证码助手
+#验证码助手 SmsCodeHelper
 
 是由原「[贝壳单词](http://www.beikedanci.com)」团队开发的一款新的开源轻App.
 
@@ -16,12 +16,24 @@
 <img src="/screenshots/s5.png" alt="screenshot" title="screenshot" width="270" height="486" />  <img src="/screenshots/s6.png" alt="screenshot" title="screenshot" width="270" height="486" />
 
 
-#源代码在GPLv3协议下发布
+#源代码在 GPLv3 协议下发布
 ###我们开源，做好设计，不乱使用权限，只求你如果喜欢，可以分享给你的朋友们，好东西需要分享才能让其健康成长，每一次分享都是我们的动力，非常感谢！
 
 
-#下载
+#下载 Download
 
 Google Play：https://play.google.com/store/apps/details?id=me.drakeet.inmessage
 
 Fir：http://fir.im/codehelper
+
+#English introduction
+SmsCodeHelper, is a new open source and light App.
+
+It can automatically emerge verification code when your phone  receives a text message contains a  verification code. And automatically copy the code to the user's clipboard. When the user receives the message verification code, just long press the EditText to paste the verification code.
+
+In addition, it can also allow users to bulk delete unwanted SMS verification code; It can also help users Backward inference out what the business is bound (for a new phone number, it is useful).
+
+It is very light, but also adhering to the usual good design and user-friendly, since it does not start at leisure, will not take up any memory (unbelievers or concern, welcome to view the source code) .
+
+
+We open source, good design, not indiscriminately use rights. Just hope if you like it, you can share with your friends, because good things need to share with others in order to let it grow, every share is our power, thanks!</string>
