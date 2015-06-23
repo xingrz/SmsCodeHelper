@@ -6,8 +6,7 @@
                 tools:context=".MainActivity">
 
     <include
-        layout="@layout/view_toolbar"
-        />
+        layout="@layout/view_toolbar"/>
 
 
             <FrameLayout
