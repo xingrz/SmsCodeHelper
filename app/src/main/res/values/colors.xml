@@ -24,7 +24,6 @@
     <color name="light_orange">#f57c00</color>
     <color name="notification_bg">#e0e0e0</color>
     <color name="notification_text_color">#cfdbdc</color>
-    <color name="lv_pressed_color">#216b74ff</color>
     <color name="refresh_progress_1">#e91e63</color>
     <color name="refresh_progress_2">#00b0ff</color>
     <color name="refresh_progress_3">@color/theme_primary</color>
