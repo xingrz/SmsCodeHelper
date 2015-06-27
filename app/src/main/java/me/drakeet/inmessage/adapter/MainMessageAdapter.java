@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,7 +18,6 @@ import me.drakeet.inmessage.api.OnItemClickListener;
 import me.drakeet.inmessage.model.Message;
 import me.drakeet.inmessage.utils.SmsUtils;
 import me.drakeet.inmessage.utils.TaskUtils;
-import me.drakeet.inmessage.utils.VersionUtils;
 
 /**
  * Created by shengkun on 15/6/5.
@@ -51,7 +50,6 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_separation, parent, false);
             viewHolder = new ViewHolder(v);
             viewHolder.dateTv = (TextView) v.findViewById(R.id.date_message_tv);
-            viewHolder.shadow = v.findViewById(R.id.ig_shadow);
         }
         if (viewType == ITEM_TYPE.ITEM_TYPE_MESSAGE.ordinal()) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
@@ -60,7 +58,7 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
             viewHolder.contentTv = (TextView) v.findViewById(R.id.content_message_tv);
             viewHolder.avatarTv = (TextView) v.findViewById(R.id.avatar_tv);
             viewHolder.dateTv = (TextView) v.findViewById(R.id.message_date_tv);
-            viewHolder.itemLl = (LinearLayout) v.findViewById(R.id.item_message);
+            viewHolder.itemLl = (FrameLayout) v.findViewById(R.id.item_message);
         }
         return viewHolder;
     }
@@ -110,11 +108,6 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
         }
         else {
             holder.dateTv.setText(mList.get(position).getReceiveDate());
-            if(needShowShadow(position)) {
-                holder.shadow.setVisibility(View.VISIBLE);
-            } else {
-                holder.shadow.setVisibility(View.GONE);
-            }
         }
     }
 
@@ -167,19 +160,6 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
         });
     }
 
-    private Boolean needShowShadow(int position) {
-        if (VersionUtils.IS_MORE_THAN_LOLLIPOP) {
-            return false;
-        }
-        if(position == 0) {
-            return false;
-        }
-        else if(mList.get(position - 1).getIsMessage()) {
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public int getItemViewType(int position) {
         return mList.get(position).getIsMessage() ? ITEM_TYPE.ITEM_TYPE_MESSAGE.ordinal() : ITEM_TYPE.ITEM_TYPE_DATE.ordinal();
@@ -194,22 +174,15 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
         TextView contentTv;
         TextView avatarTv;
         TextView dateTv;
-        View shadow;
-        LinearLayout itemLl;
+        FrameLayout itemLl;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-
-    public void setShowResult(Boolean showResult) {
+    public void setShowResult(boolean showResult) {
         this.mShowResult = showResult;
     }
 
-
-    @Override
-    public void onViewRecycled(MainMessageAdapter.ViewHolder holder) {
-        super.onViewRecycled(holder);
-    }
 }

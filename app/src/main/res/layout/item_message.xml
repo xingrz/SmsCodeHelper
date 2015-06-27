@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_message"
-    android:orientation="vertical"
-    android:elevation="3px"
-    android:background="@color/message_bg_color"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/message_bg_color"
+    android:elevation="1dp"
+    android:foreground="?selectableItemBackground">
 
     <RelativeLayout
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:paddingRight="16dp"
-        android:background="?selectableItemBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp">
 
         <FrameLayout
             android:id="@+id/avatar_fg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:paddingTop="4dp"
-            >
+            android:paddingTop="4dp">
 
             <TextView
                 android:id="@+id/avatar_tv"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:padding="2dp"
-                android:textSize="10sp"
-                android:text="I"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textStyle="bold"
                 android:background="@drawable/round_background"
-                />
+                android:gravity="center"
+                android:padding="2dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp"
+                tools:text="I" />
 
         </FrameLayout>
 
         <TextView
-            android:layout_toRightOf="@+id/avatar_fg"
             android:id="@+id/author_message_tv"
-            android:text="10086"
-            android:textStyle="bold"
-            android:layout_alignTop="@+id/avatar_fg"
-            android:textColor="@color/material_text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"/>
+            android:layout_alignTop="@id/avatar_fg"
+            android:layout_toEndOf="@id/avatar_fg"
+            android:layout_toRightOf="@id/avatar_fg"
+            android:textColor="@color/material_text_title"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="10086" />
 
         <TextView
             android:id="@+id/content_message_tv"
-            android:text="温馨提示，您的可信用额度已不足50元，请尽快充值或去营业厅交费！"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/md_grey_600"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/author_message_tv"
-            android:layout_alignLeft="@+id/author_message_tv"
+            android:layout_alignLeft="@id/author_message_tv"
+            android:layout_alignStart="@id/author_message_tv"
+            android:layout_below="@id/author_message_tv"
+            android:layout_marginTop="2dp"
             android:maxLines="2"
+            android:textColor="@color/md_grey_600"
             android:textSize="13sp"
-            />
+            tools:text="温馨提示，您的可信用额度已不足50元，请尽快充值或去营业厅交费！" />
 
         <TextView
+            android:id="@+id/message_date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Just now"
+            android:layout_alignLeft="@id/author_message_tv"
+            android:layout_alignStart="@id/author_message_tv"
+            android:layout_below="@id/content_message_tv"
             android:layout_marginTop="4dp"
             android:textColor="@color/material_text_content"
-            android:layout_below="@+id/content_message_tv"
-            android:layout_alignLeft="@+id/author_message_tv"
-            android:id="@+id/message_date_tv"
-            android:textSize="13sp"/>
+            android:textSize="13sp"
+            tools:text="Just now" />
 
     </RelativeLayout>
 
-    <include layout="@layout/line"/>
-
-</LinearLayout>
-
+</FrameLayout>

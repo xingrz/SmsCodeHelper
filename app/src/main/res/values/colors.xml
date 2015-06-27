@@ -9,7 +9,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="orange">#fdd835</color>
-    <color name="line_gray">#d9d9d9</color>
+    <color name="line_gray">#1f000000</color>
     <!--<color name="message_date_grey">#f0f0f0</color>-->
     <color name="message_date_grey">#eceff1</color>
     <color name="pink">#e91e63</color>

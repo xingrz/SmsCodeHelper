@@ -42,6 +42,7 @@ import me.drakeet.inmessage.utils.SmsUtils;
 import me.drakeet.inmessage.utils.TaskUtils;
 import me.drakeet.inmessage.utils.ToastUtils;
 import me.drakeet.inmessage.utils.VersionUtils;
+import me.drakeet.inmessage.widget.SeparatorItemDecoration;
 
 public class MainActivity extends SwipeRefreshBaseActivity {
 
@@ -94,6 +95,7 @@ public class MainActivity extends SwipeRefreshBaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.addItemDecoration(new SeparatorItemDecoration(this));
         mRecyclerView.setOnTouchListener(
                 new View.OnTouchListener() {
                     @Override
