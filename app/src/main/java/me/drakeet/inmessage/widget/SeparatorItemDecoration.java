@@ -45,24 +45,22 @@ public class SeparatorItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    private MainMessageAdapter.ITEM_TYPE getItemType(View child, RecyclerView parent) {
-        int adapterPosition = parent.getChildAdapterPosition(child);
-        int itemType = parent.getAdapter().getItemViewType(adapterPosition);
-        return MainMessageAdapter.ITEM_TYPE.values()[itemType];
+    private int getItemType(View child, RecyclerView parent) {
+        return parent.getChildViewHolder(child).getItemViewType();
     }
 
     private boolean shouldDrawDivider(RecyclerView parent, int i, int childCount) {
         View child = parent.getChildAt(i);
 
         // 对于 Lollipop 以上，因为 message item 有 elevation，不绘制 date item 底下的分割线
-        if (VersionUtils.IS_MORE_THAN_LOLLIPOP && getItemType(child, parent)
-                == MainMessageAdapter.ITEM_TYPE.ITEM_TYPE_DATE) {
+        if (VersionUtils.IS_MORE_THAN_LOLLIPOP
+                && getItemType(child, parent) == MainMessageAdapter.ITEM_TYPE_DATE) {
             return false;
         }
 
         // 总是不绘制 date item 上一个 message item 底下的分割线，因为有 elevation 或假阴影
-        if (i < childCount - 1 && getItemType(parent.getChildAt(i + 1), parent)
-                == MainMessageAdapter.ITEM_TYPE.ITEM_TYPE_DATE) {
+        if (i < childCount - 1
+                && getItemType(parent.getChildAt(i + 1), parent) == MainMessageAdapter.ITEM_TYPE_DATE) {
             return false;
         }
 
@@ -72,8 +70,8 @@ public class SeparatorItemDecoration extends RecyclerView.ItemDecoration {
     private boolean shouldDrawShadow(RecyclerView parent, int i) {
         return !VersionUtils.IS_MORE_THAN_LOLLIPOP
                 && i > 0
-                && getItemType(parent.getChildAt(i - 1), parent) == MainMessageAdapter.ITEM_TYPE.ITEM_TYPE_MESSAGE
-                && getItemType(parent.getChildAt(i), parent) == MainMessageAdapter.ITEM_TYPE.ITEM_TYPE_DATE;
+                && getItemType(parent.getChildAt(i - 1), parent) == MainMessageAdapter.ITEM_TYPE_MESSAGE
+                && getItemType(parent.getChildAt(i), parent) == MainMessageAdapter.ITEM_TYPE_DATE;
     }
 
 }

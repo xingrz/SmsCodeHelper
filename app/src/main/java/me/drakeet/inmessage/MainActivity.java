@@ -433,7 +433,6 @@ public class MainActivity extends SwipeRefreshBaseActivity {
                             mShowResult = isChecked;
                             if (mMainMessageAdapter != null) {
                                 mMainMessageAdapter.setShowResult(isChecked);
-                                mMainMessageAdapter.notifyDataSetChanged();
                                 if (isChecked)
                                     ToastUtils.showShort(getString(R.string.open_simplified));
                                 else

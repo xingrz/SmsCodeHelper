@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,93 +23,89 @@ import me.drakeet.inmessage.utils.TaskUtils;
  */
 public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.ViewHolder> {
 
-    public enum ITEM_TYPE {
-        ITEM_TYPE_DATE,
-        ITEM_TYPE_MESSAGE
-    }
+    public static final int ITEM_TYPE_DATE = 0;
+    public static final int ITEM_TYPE_MESSAGE = 1;
+
+    private LayoutInflater mInflater;
 
     private List<Message> mList;
-    private Context mContext;
     private SmsUtils mSmsUtils;
     private Boolean mShowResult = false;
 
     private OnItemClickListener listener;
 
-
     public MainMessageAdapter(Context context, List<Message> messageList) {
+        mInflater = LayoutInflater.from(context);
         mList = messageList;
         mSmsUtils = new SmsUtils(context);
-        mContext = context;
     }
 
     @Override
     public MainMessageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolder viewHolder = null;
-        if (viewType == ITEM_TYPE.ITEM_TYPE_DATE.ordinal()) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_separation, parent, false);
-            viewHolder = new ViewHolder(v);
-            viewHolder.dateTv = (TextView) v.findViewById(R.id.date_message_tv);
+        switch (viewType) {
+            case ITEM_TYPE_DATE:
+                return new DateViewHolder(mInflater.inflate(R.layout.view_separation, parent, false));
+            case ITEM_TYPE_MESSAGE:
+                return new MessageViewHolder(mInflater.inflate(R.layout.item_message, parent, false));
+            default:
+                return null;
         }
-        if (viewType == ITEM_TYPE.ITEM_TYPE_MESSAGE.ordinal()) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
-            viewHolder = new ViewHolder(v);
-            viewHolder.authorTv = (TextView) v.findViewById(R.id.author_message_tv);
-            viewHolder.contentTv = (TextView) v.findViewById(R.id.content_message_tv);
-            viewHolder.avatarTv = (TextView) v.findViewById(R.id.avatar_tv);
-            viewHolder.dateTv = (TextView) v.findViewById(R.id.message_date_tv);
-            viewHolder.itemLl = (FrameLayout) v.findViewById(R.id.item_message);
-        }
-        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MainMessageAdapter.ViewHolder holder, final int position) {
-        if (holder.getItemViewType() == ITEM_TYPE.ITEM_TYPE_MESSAGE.ordinal()) {
-            holder.authorTv.setText(mList.get(position).getSender());
-            if(mShowResult && mList.get(position).getResultContent() != null) {
-                holder.contentTv.setText(mList.get(position).getResultContent());
-            }
-            else {
-                holder.contentTv.setText(mList.get(position).getContent());
-            }
-            if (mList.get(position).getReceiveDate() != null) {
-                holder.dateTv.setText(mList.get(position).getReceiveDate());
-            }
-            holder.authorTv.setText(mList.get(position).getSender());
-            if(mList.get(position).getCompanyName() != null) {
-                String showCompanyName = mList.get(position).getCompanyName();
-                if(showCompanyName.length() == 4) {
-                    String fourCharsName = "";
-                    for(int u = 0; u < showCompanyName.length();u ++) {
-                        if(u == 2) {
-                            fourCharsName += "\n";
-                        }
-                        fourCharsName += showCompanyName.charAt(u);
-                    }
-                    showCompanyName = fourCharsName;
-                }
-                holder.avatarTv.setText(showCompanyName);
-            }
-            else {
-                holder.avatarTv.setText("?");
-            }
-            if (listener != null) {
-                holder.itemLl.setOnClickListener(
-                        new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                listener.onItemClick(v, position);
-                            }
-                        }
-                );
-            }
-        }
-        else {
-            holder.dateTv.setText(mList.get(position).getReceiveDate());
+    public void onBindViewHolder(MainMessageAdapter.ViewHolder holder, int position) {
+        switch (holder.getItemViewType()) {
+            case ITEM_TYPE_DATE:
+                onBindDateViewHolder((DateViewHolder) holder, position);
+                break;
+            case ITEM_TYPE_MESSAGE:
+                onBindMessageViewHolder((MessageViewHolder) holder, position);
+                break;
         }
     }
 
+    private void onBindDateViewHolder(DateViewHolder holder, int position) {
+        holder.dateTv.setText(mList.get(position).getReceiveDate());
+    }
+
+    private void onBindMessageViewHolder(MessageViewHolder holder, int position) {
+        holder.authorTv.setText(mList.get(position).getSender());
+
+        if (mShowResult && mList.get(position).getResultContent() != null) {
+            holder.contentTv.setText(mList.get(position).getResultContent());
+        }
+        else {
+            holder.contentTv.setText(mList.get(position).getContent());
+        }
+
+        if (mList.get(position).getReceiveDate() != null) {
+            holder.dateTv.setText(mList.get(position).getReceiveDate());
+        }
+
+        holder.authorTv.setText(mList.get(position).getSender());
+        holder.avatarTv.setText(getFormattedCompanyName(position));
+    }
+
+    private String getFormattedCompanyName(int position) {
+        String showCompanyName = mList.get(position).getCompanyName();
+
+        if (showCompanyName == null) {
+            return "?";
+        }
+
+        if (showCompanyName.length() == 4) {
+            String fourCharsName = "";
+            for (int u = 0; u < showCompanyName.length();u ++) {
+                if (u == 2) {
+                    fourCharsName += "\n";
+                }
+                fourCharsName += showCompanyName.charAt(u);
+            }
+            showCompanyName = fourCharsName;
+        }
+
+        return showCompanyName;
+    }
 
     @Override
     public int getItemCount() {
@@ -162,19 +157,57 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        return mList.get(position).getIsMessage() ? ITEM_TYPE.ITEM_TYPE_MESSAGE.ordinal() : ITEM_TYPE.ITEM_TYPE_DATE.ordinal();
+        return mList.get(position).getIsMessage() ? ITEM_TYPE_MESSAGE : ITEM_TYPE_DATE;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         public ViewHolder(View itemView) {
             super(itemView);
         }
 
-        TextView authorTv;
-        TextView contentTv;
-        TextView avatarTv;
-        TextView dateTv;
-        FrameLayout itemLl;
+    }
+
+    public class DateViewHolder extends ViewHolder {
+
+        public TextView dateTv;
+
+        public DateViewHolder(View itemView) {
+            super(itemView);
+            dateTv = (TextView) itemView.findViewById(R.id.date_message_tv);
+        }
+
+    }
+
+    public class MessageViewHolder extends ViewHolder {
+
+        public TextView authorTv;
+        public TextView contentTv;
+        public TextView avatarTv;
+        public TextView dateTv;
+
+        public MessageViewHolder(View itemView) {
+            super(itemView);
+
+            authorTv = (TextView) itemView.findViewById(R.id.author_message_tv);
+            contentTv = (TextView) itemView.findViewById(R.id.content_message_tv);
+            avatarTv = (TextView) itemView.findViewById(R.id.avatar_tv);
+            dateTv = (TextView) itemView.findViewById(R.id.message_date_tv);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v, getAdapterPosition());
+                }
+            });
+        }
+
+    }
+
+    private void onItemClick(View itemView, int position) {
+        if (listener != null) {
+            listener.onItemClick(itemView, position);
+        }
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -183,6 +216,11 @@ public class MainMessageAdapter extends RecyclerView.Adapter<MainMessageAdapter.
 
     public void setShowResult(boolean showResult) {
         this.mShowResult = showResult;
+        for (int i = 0; i < mList.size(); i++) {
+            if (mList.get(i).getIsMessage()) {
+                notifyItemChanged(i);
+            }
+        }
     }
 
 }
